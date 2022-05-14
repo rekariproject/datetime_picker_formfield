@@ -2,6 +2,8 @@
 
 A TextFormField that emits DateTimes and helps show Material, Cupertino, and other style picker dialogs.
 
+Fork with support for flutter 3.0.0
+
 ## Example
 
 See the example tab (example/lib/main.dart) for more.
