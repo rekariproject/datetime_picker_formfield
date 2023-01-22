@@ -150,20 +150,22 @@ class BasicDateTimeField extends StatelessWidget {
       DateTimeField(
         format: format,
         onShowPicker: (context, currentValue) async {
-          final date = await showDatePicker(
-              context: context,
-              firstDate: DateTime(1900),
-              initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2100));
-          if (date != null) {
-            final time = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-            );
-            return DateTimeField.combine(date, time);
-          } else {
-            return currentValue;
-          }
+          return await showDatePicker(
+            context: context,
+            firstDate: DateTime(1900),
+            initialDate: currentValue ?? DateTime.now(),
+            lastDate: DateTime(2100),
+          ).then((DateTime? date) async {
+            if (date != null) {
+              final time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+              );
+              return DateTimeField.combine(date, time);
+            } else {
+              return currentValue;
+            }
+          });
         },
       ),
     ]);
@@ -239,20 +241,22 @@ class _ComplexDateTimeFieldState extends State<ComplexDateTimeField> {
       DateTimeField(
         format: format,
         onShowPicker: (context, currentValue) async {
-          final date = await showDatePicker(
-              context: context,
-              firstDate: DateTime(1900),
-              initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2100));
-          if (date != null) {
-            final time = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-            );
-            return DateTimeField.combine(date, time);
-          } else {
-            return currentValue;
-          }
+          return await showDatePicker(
+            context: context,
+            firstDate: DateTime(1900),
+            initialDate: currentValue ?? DateTime.now(),
+            lastDate: DateTime(2100),
+          ).then((DateTime? date) async {
+            if (date != null) {
+              final time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+              );
+              return DateTimeField.combine(date, time);
+            } else {
+              return currentValue;
+            }
+          });
         },
         autovalidateMode: autoValidateMode,
         validator: (date) => date == null ? 'Invalid date' : null,
@@ -319,7 +323,7 @@ class LocaleExample extends StatelessWidget {
       DateTimeField(
         format: format,
         onShowPicker: (context, currentValue) async {
-          final date = await showDatePicker(
+          return await showDatePicker(
             context: context,
             firstDate: DateTime(1900),
             initialDate: DateTime.now(),
@@ -329,21 +333,22 @@ class LocaleExample extends StatelessWidget {
               locale: Locale('zh'),
               child: child,
             ),
-          );
-          if (date != null) {
-            final time = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-              builder: (context, child) => Localizations.override(
+          ).then((DateTime? date) async {
+            if (date != null) {
+              final time = await showTimePicker(
                 context: context,
-                locale: Locale('zh'),
-                child: child,
-              ),
-            );
-            return DateTimeField.combine(date, time);
-          } else {
-            return currentValue;
-          }
+                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                builder: (context, child) => Localizations.override(
+                  context: context,
+                  locale: Locale('zh'),
+                  child: child,
+                ),
+              );
+              return DateTimeField.combine(date, time);
+            } else {
+              return currentValue;
+            }
+          });
         },
       ),
     ]);

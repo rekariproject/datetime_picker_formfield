@@ -27,10 +27,11 @@ class BasicDateField extends StatelessWidget {
         format: format,
         onShowPicker: (context, currentValue) {
           return showDatePicker(
-              context: context,
-              firstDate: DateTime(1900),
-              initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2100));
+            context: context,
+            firstDate: DateTime(1900),
+            initialDate: currentValue ?? DateTime.now(),
+            lastDate: DateTime(2100),
+          );
         },
       ),
     ]);
@@ -66,21 +67,23 @@ class BasicDateTimeField extends StatelessWidget {
       DateTimeField(
         format: format,
         onShowPicker: (context, currentValue) async {
-          final date = await showDatePicker(
-              context: context,
-              firstDate: DateTime(1900),
-              initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2100));
-          if (date != null) {
-            final time = await showTimePicker(
-              context: context,
-              initialTime:
-                  TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-            );
-            return DateTimeField.combine(date, time);
-          } else {
-            return currentValue;
-          }
+          return await showDatePicker(
+            context: context,
+            firstDate: DateTime(1900),
+            initialDate: currentValue ?? DateTime.now(),
+            lastDate: DateTime(2100),
+          ).then((DateTime? date) async {
+            if (date != null) {
+              final time = await showTimePicker(
+                context: context,
+                initialTime:
+                    TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+              );
+              return DateTimeField.combine(date, time);
+            } else {
+              return currentValue;
+            }
+          });
         },
       ),
     ]);
