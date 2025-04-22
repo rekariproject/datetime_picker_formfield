@@ -287,6 +287,7 @@ class _DateTimeFieldState extends FormFieldState<DateTime> {
       final newValue = await widget.onShowPicker(context, value);
       isShowingDialog = false;
       if (newValue != null) {
+        setValue(newValue);
         _effectiveController!.text = format(newValue);
       }
     }
